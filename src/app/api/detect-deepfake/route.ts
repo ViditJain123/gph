@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GeminiClient } from "@/lib/gemini";
+import connectToDatabase from "@/lib/mongodb";
+import { AnalysisLog } from "@/lib/models/AnalysisLog";
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/avi', 'video/mov', 'video/webm'];
@@ -48,6 +50,31 @@ export async function POST(request: NextRequest) {
       file.name,
       file.type
     );
+
+    // Connect to database and save the analysis log
+    try {
+      await connectToDatabase();
+      
+      // Extract client information
+      const ipAddress = request.headers.get('x-forwarded-for') || 
+        request.headers.get('x-real-ip') || 
+        'unknown';
+      const userAgent = request.headers.get('user-agent') || 'unknown';
+
+      // Create analysis log entry
+      const analysisLog = new AnalysisLog({
+        ...analysisResult,
+        ipAddress,
+        userAgent
+      });
+
+      await analysisLog.save();
+      console.log(`Analysis log saved with reportId: ${analysisResult.reportId}`);
+    } catch (dbError) {
+      // Log the database error but don't fail the main response
+      console.error("Failed to save analysis log to database:", dbError);
+      // Continue with the response even if database logging fails
+    }
 
     return NextResponse.json({
       success: true,

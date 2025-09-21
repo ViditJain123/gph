@@ -45,18 +45,20 @@ IMPORTANT INSTRUCTIONS:
 4. For images: Focus on facial artifacts, blending inconsistencies, and compression artifacts
 
 Please provide a comprehensive deepfake analysis report with the following details:
+
+BASIC REPORT INFO:
 - Generate a unique report ID (format: DFVD-YYYY-MMDD-XXX)
 - Set prepared by as "Gemini AI Analysis System"
 - Use today's date: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
 - Tool used: "Gemini 2.5 Pro"
 - Detection engine version: "2.5.0"
 
-Case Overview:
+CASE OVERVIEW:
 - Generate a case reference (format: CYB/XXXX/YYYY/)
 - Source: "User Upload"
 - Content type: "${isVideo ? 'Video Content' : 'Image Content'}"
 
-File Metadata:
+FILE METADATA:
 - File name: "${fileName}"
 - Format: "${mimeType.split('/')[1].toUpperCase()}"
 - Duration: ${isVideo ? '"Analyze and provide duration"' : '"N/A"'}
@@ -64,19 +66,35 @@ File Metadata:
 - MD5 hash: "${md5Hash}"
 - Creation date: "Estimated based on analysis"
 
-Detection Parameters:
+DETECTION PARAMETERS:
 - Frame sampling rate: ${isVideo ? '"1 frame/sec or appropriate rate"' : '"Single image analysis"'}
 - Facial landmark detection: "Enabled (68-point model)"
 - Audio-visual sync: ${isVideo ? '"Enabled"' : '"N/A"'}
 - Classification threshold: 0.85
 
-Frame Analysis:
+FRAME ANALYSIS:
 ${isVideo ? 
   'Provide frame-by-frame analysis with timestamps, confidence scores, and FAKE/REAL labels' : 
   'Provide single frame analysis with confidence score and FAKE/REAL label'
 }
 
-Summary:
+${isVideo ? `
+TEMPORAL CONSISTENCY ANALYSIS:
+- Provide a temporal consistency score between 0 and 1 (where 1 is perfectly consistent)
+- Include interpretation explaining inconsistencies in facial movement, lighting, or other temporal artifacts
+
+AUDIO-VISUAL SYNC ANALYSIS:
+- Calculate a deviation index for lip sync and audio alignment
+- Provide detailed observation about synchronization issues, timing mismatches, or phoneme alignment problems
+` : ''}
+
+DETAILED SUMMARY:
+- Provide a comprehensive summary explaining the analysis findings
+- Include the overall model confidence score for the classification
+- Specify the operational threshold used (0.85)
+- Explain the reasoning behind the verdict with specific evidence
+
+SUMMARY METRICS:
 - Overall verdict: FAKE/REAL/INCONCLUSIVE based on your analysis
 - Average confidence score
 - Total frames analyzed

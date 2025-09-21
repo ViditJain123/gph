@@ -10,6 +10,10 @@ A Next.js application that uses Google's Gemini 2.5 Pro to detect deepfake conte
 - 📊 **Detailed Reports**: Frame-by-frame analysis with confidence scores
 - 🎯 **Professional Format**: Report format similar to forensic analysis tools
 - 🔒 **Secure**: File validation and size limits (max 50MB)
+- 📝 **Analysis History**: View all previous analyses with pagination (10 per page)
+- 🗄️ **MongoDB Integration**: Stores analysis logs with metadata
+- 🔍 **Filter & Search**: Filter history by verdict (FAKE/REAL/INCONCLUSIVE)
+- 📱 **Responsive Design**: Works on desktop and mobile devices
 
 ## Getting Started
 
@@ -17,6 +21,7 @@ A Next.js application that uses Google's Gemini 2.5 Pro to detect deepfake conte
 
 - Node.js 18+ 
 - A Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey)
+- MongoDB database (local or MongoDB Atlas) - required for analysis history
 
 ### Installation
 
@@ -36,9 +41,11 @@ npm install
 cp .env.example .env.local
 ```
 
-4. Edit `.env.local` and add your Gemini API key:
+4. Edit `.env.local` and add your API keys and database connection:
 ```
 GEMINI_API_KEY=your_actual_api_key_here
+MONGO_URI=mongodb://localhost:27017/deepfake-detection
+# For MongoDB Atlas: mongodb+srv://username:password@cluster.mongodb.net/deepfake-detection
 ```
 
 5. Run the development server:

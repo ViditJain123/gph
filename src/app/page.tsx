@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { UploadComponent } from "@/components/UploadComponent";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
 import { type DeepfakeAnalysisReport } from "@/types/deepfake";
@@ -27,13 +28,27 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Deepfake Detection System
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Upload a video or image to analyze it for deepfake content using advanced AI detection for accurate and detailed analysis.
-          </p>
+        {/* Header with Navigation */}
+        <div className="flex justify-between items-center mb-8">
+          <div className="text-center flex-1">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              Deepfake Detection System
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Upload a video or image to analyze it for deepfake content using advanced AI detection for accurate and detailed analysis.
+            </p>
+          </div>
+          <div className="ml-8">
+            <Link
+              href="/history"
+              className="flex items-center px-4 py-2 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              View History
+            </Link>
+          </div>
         </div>
 
         <div className="max-w-4xl mx-auto">

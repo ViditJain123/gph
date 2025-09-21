@@ -21,6 +21,22 @@ export interface FrameClassification {
   label: "FAKE" | "REAL";
 }
 
+export interface TemporalConsistencyAnalysis {
+  score: number;
+  interpretation: string;
+}
+
+export interface AudioVisualSyncAnalysis {
+  deviationIndex: number;
+  observation: string;
+}
+
+export interface DetailedSummary {
+  content: string;
+  confidenceScore: number;
+  operationalThreshold: number;
+}
+
 export interface DeepfakeAnalysisReport {
   reportId: string;
   preparedBy: string;
@@ -37,6 +53,11 @@ export interface DeepfakeAnalysisReport {
   videoFileMetadata: VideoMetadata;
   detectionParameters: DetectionParameters;
   frameLevelClassification: FrameClassification[];
+  
+  // Advanced Analysis
+  temporalConsistency?: TemporalConsistencyAnalysis;
+  audioVisualSync?: AudioVisualSyncAnalysis;
+  detailedSummary?: DetailedSummary;
   
   // Summary fields
   overallVerdict: "FAKE" | "REAL" | "INCONCLUSIVE";
@@ -166,6 +187,55 @@ export const deepfakeDetectionSchema = {
         required: ["frameNumber", "timestamp", "confidence", "label"]
       },
       description: "Frame-by-frame analysis results"
+    },
+    temporalConsistency: {
+      type: "object" as const,
+      properties: {
+        score: {
+          type: "number" as const,
+          description: "Temporal consistency score between 0 and 1"
+        },
+        interpretation: {
+          type: "string" as const,
+          description: "Interpretation of the temporal consistency analysis"
+        }
+      },
+      required: ["score", "interpretation"],
+      description: "Temporal consistency analysis for video content"
+    },
+    audioVisualSync: {
+      type: "object" as const,
+      properties: {
+        deviationIndex: {
+          type: "number" as const,
+          description: "Audio-visual sync deviation index"
+        },
+        observation: {
+          type: "string" as const,
+          description: "Detailed observation about lip sync and audio alignment"
+        }
+      },
+      required: ["deviationIndex", "observation"],
+      description: "Audio-visual synchronization analysis"
+    },
+    detailedSummary: {
+      type: "object" as const,
+      properties: {
+        content: {
+          type: "string" as const,
+          description: "Comprehensive summary of the analysis findings"
+        },
+        confidenceScore: {
+          type: "number" as const,
+          description: "Overall model confidence score for the classification"
+        },
+        operationalThreshold: {
+          type: "number" as const,
+          description: "The operational threshold used for classification"
+        }
+      },
+      required: ["content", "confidenceScore", "operationalThreshold"],
+      description: "Detailed summary with confidence metrics"
     },
     overallVerdict: {
       type: "string" as const,
