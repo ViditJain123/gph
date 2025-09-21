@@ -22,6 +22,13 @@ export class GeminiClient {
       // Generate file hash
       const md5Hash = crypto.createHash('md5').update(file).digest('hex');
       
+      // Generate unique report ID
+      const now = new Date();
+      const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
+      const timeStr = now.toISOString().slice(11, 19).replace(/:/g, '');
+      const randomSuffix = crypto.randomBytes(3).toString('hex').toUpperCase();
+      const uniqueReportId = `DFVD-${dateStr}-${timeStr}-${randomSuffix}`;
+      
       // Create file data for Gemini
       const fileData = {
         inlineData: {
@@ -47,7 +54,7 @@ IMPORTANT INSTRUCTIONS:
 Please provide a comprehensive deepfake analysis report with the following details:
 
 BASIC REPORT INFO:
-- Generate a unique report ID (format: DFVD-YYYY-MMDD-XXX)
+- Use this specific report ID: "${uniqueReportId}"
 - Set prepared by as "Gemini AI Analysis System"
 - Use today's date: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
 - Tool used: "Gemini 2.5 Pro"

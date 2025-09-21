@@ -68,8 +68,34 @@ export async function POST(request: NextRequest) {
         userAgent
       });
 
-      await analysisLog.save();
-      console.log(`Analysis log saved with reportId: ${analysisResult.reportId}`);
+      // Try to save with retry logic for duplicate key errors
+      let retryCount = 0;
+      const maxRetries = 3;
+      
+      while (retryCount < maxRetries) {
+        try {
+          await analysisLog.save();
+          console.log(`Analysis log saved with reportId: ${analysisResult.reportId}`);
+          break;
+        } catch (saveError: unknown) {
+          const mongoError = saveError as { code?: number };
+          if (mongoError.code === 11000 && retryCount < maxRetries - 1) {
+            // Duplicate key error - regenerate reportId and retry
+            retryCount++;
+            const now = new Date();
+            const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
+            const timeStr = now.toISOString().slice(11, 19).replace(/:/g, '');
+            const randomSuffix = Math.random().toString(36).substring(2, 8).toUpperCase();
+            const newReportId = `DFVD-${dateStr}-${timeStr}-${randomSuffix}`;
+            
+            analysisLog.reportId = newReportId;
+            analysisResult.reportId = newReportId; // Update the response as well
+            console.log(`Retry ${retryCount}: Using new reportId: ${newReportId}`);
+          } else {
+            throw saveError;
+          }
+        }
+      }
     } catch (dbError) {
       // Log the database error but don't fail the main response
       console.error("Failed to save analysis log to database:", dbError);
