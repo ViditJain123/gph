@@ -39,7 +39,7 @@ const DetectionParametersSchema = new mongoose.Schema({
 }, { _id: false });
 
 const AnalysisLogSchema = new mongoose.Schema({
-  reportId: { type: String, required: true, unique: true },
+  reportId: { type: String, required: true, unique: true, index: true },
   preparedBy: { type: String, required: true },
   dateOfAnalysis: { type: String, required: true },
   toolModelUsed: { type: String, required: true },
@@ -65,7 +65,6 @@ const AnalysisLogSchema = new mongoose.Schema({
 
 // Add indexes for efficient querying
 AnalysisLogSchema.index({ createdAt: -1 }); // For chronological ordering
-AnalysisLogSchema.index({ reportId: 1 }); // For unique report lookup
 AnalysisLogSchema.index({ overallVerdict: 1 }); // For filtering by verdict
 AnalysisLogSchema.index({ 'videoFileMetadata.md5Hash': 1 }); // For duplicate detection
 
