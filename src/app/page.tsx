@@ -32,8 +32,7 @@ export default function Home() {
             Deepfake Detection System
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Upload a video or image to analyze it for deepfake content using advanced AI detection.
-            Powered by Gemini 2.5 Pro for accurate and detailed analysis.
+            Upload a video or image to analyze it for deepfake content using advanced AI detection for accurate and detailed analysis.
           </p>
         </div>
 

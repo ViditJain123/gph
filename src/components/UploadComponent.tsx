@@ -198,7 +198,7 @@ export function UploadComponent({ onAnalysisStart, onAnalysisComplete }: UploadC
       <div className="mt-8 border-t pt-6">
         <h3 className="font-medium text-gray-900 mb-3">What happens next?</h3>
         <ul className="text-sm text-gray-600 space-y-2">
-          <li>• Your file will be securely analyzed using Gemini 2.5 Pro AI</li>
+          <li>• Your file will be securely analyzed</li>
           <li>• Frame-by-frame analysis for videos, comprehensive analysis for images</li>
           <li>• Detection of facial inconsistencies, temporal artifacts, and manipulation signs</li>
           <li>• Detailed report with confidence scores and technical analysis</li>
